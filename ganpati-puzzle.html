@@ -59,7 +59,7 @@ margin:15px;
 <body>
 
 <h1>🧩 Ganpati Puzzle</h1>
-
+<h2>⏱️ Time: <span id="timer">0</span> sec</h2>
 <div id="puzzle"></div>
 
 <button onclick="shuffle()">🔀 Shuffle</button>
@@ -72,7 +72,8 @@ margin:15px;
   const puzzle = document.getElementById("puzzle");
 let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
 let tiles = [0,1,2,3,4,5,6,7,8];
-
+let seconds = 0;
+let timer;
 function draw(){
     puzzle.innerHTML="";
 
@@ -122,7 +123,7 @@ leaderboard.sort((a,b)=>b.score-a.score);
 
 leaderboard = leaderboard.slice(0,10);
 localStorage.setItem("leaderboard",JSON.stringify(leaderboard));
-
+clearInterval(timer);
 showLeaderboard();
                 alert("🎉 Ganpati Bappa Morya! Puzzle Completed!");
             },100);
@@ -131,7 +132,19 @@ showLeaderboard();
 }
 
 function shuffle(){
+
+    clearInterval(timer);
+
+    seconds = 0;
+    document.getElementById("timer").innerText = seconds;
+
+    timer = setInterval(() => {
+        seconds++;
+        document.getElementById("timer").innerText = seconds;
+    },1000);
+
     for(let i=0;i<100;i++){
+
         const empty=tiles.indexOf(8);
 
         const moves=[empty-1,empty+1,empty-3,empty+3]
@@ -143,7 +156,7 @@ function shuffle(){
     }
 
     draw();
-}
+   }
 
 function isSolved(){
     return tiles.every((v,i)=>v===i);
