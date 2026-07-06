@@ -177,8 +177,13 @@ function showLeaderboard(){
 
     document.getElementById("leaderboard").innerHTML = html;
 }
-shuffle();
-  showLeaderboard();
+const img = new Image();
+img.src = "ganpati.jpg.png";
+
+img.onload = function(){
+    shuffle();
+    showLeaderboard();
+};
 </script>
 
 </body>
