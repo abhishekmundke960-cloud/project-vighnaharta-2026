@@ -62,7 +62,71 @@ margin:15px;
 <button onclick="shuffle()">🔀 Shuffle</button>
 
 <script>
-// पुढच्या स्टेपमध्ये JavaScript देतो
+  const puzzle = document.getElementById("puzzle");
+
+let tiles = [0,1,2,3,4,5,6,7,8];
+
+function draw(){
+    puzzle.innerHTML="";
+
+    tiles.forEach((value,index)=>{
+        const tile=document.createElement("div");
+
+        if(value===8){
+            tile.className="tile empty";
+        }else{
+            tile.className="tile";
+            tile.style.backgroundPosition=`${-(value%3)*100}px ${-Math.floor(value/3)*100}px`;
+        }
+
+        tile.onclick=()=>move(index);
+
+        puzzle.appendChild(tile);
+    });
+}
+
+function move(index){
+    const empty=tiles.indexOf(8);
+
+    const valid=[
+        empty-1,
+        empty+1,
+        empty-3,
+        empty+3
+    ];
+
+    if(valid.includes(index)){
+        [tiles[index],tiles[empty]]=[tiles[empty],tiles[index]];
+        draw();
+
+        if(isSolved()){
+            setTimeout(()=>{
+                alert("🎉 Ganpati Bappa Morya! Puzzle Completed!");
+            },100);
+        }
+    }
+}
+
+function shuffle(){
+    for(let i=0;i<100;i++){
+        const empty=tiles.indexOf(8);
+
+        const moves=[empty-1,empty+1,empty-3,empty+3]
+        .filter(i=>i>=0 && i<9);
+
+        const random=moves[Math.floor(Math.random()*moves.length)];
+
+        [tiles[random],tiles[empty]]=[tiles[empty],tiles[random]];
+    }
+
+    draw();
+}
+
+function isSolved(){
+    return tiles.every((v,i)=>v===i);
+}
+
+draw();
 </script>
 
 </body>
